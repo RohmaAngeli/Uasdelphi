@@ -1,0 +1,40 @@
+//Double click Tombol Load Citra
+procedure TForm1.BitBtn4Click(Sender: TObject);
+var
+  rasio : real;
+  high,wide : integer;
+begin
+  if RadioButton1.Checked then
+  begin
+    OpenPictureDialog1.DefaultExt := GraphicExtension(TJpegImage);
+    OpenPictureDialog1.Filter := GraphicFilter(TJpegImage);
+  end;
+  if RadioButton2.Checked then
+  begin
+    OpenPictureDialog1.DefaultExt := GraphicExtension(TBitmap);
+    OpenPictureDialog1.Filter := GraphicFilter(TBitmap);
+  end;
+  if OpenPictureDialog1.Execute then
+  begin
+    if OpenPictureDialog1.FileName<>'' then
+    begin
+      Image1.Picture.LoadFromFile(OpenPictureDialog1.FileName);
+    end;
+  end;
+  rasio:=image1.picture.width/image1.picture.height;
+  image1.top:=0; image1.left:=0;
+  high:=panel1.height;
+  wide:=trunc(high*rasio);
+  if wide>panel1.width then
+  begin
+    wide:=panel1.width;
+    rasio:=image1.picture.height/image1.picture.width;
+    high:=trunc(wide*rasio);
+  end;
+  panel1.width:=wide;
+  image1.width:=wide;
+  image1.height:=high;
+  image1.refresh;
+  image1.repaint;
+  image1.Stretch:=true;
+end;
