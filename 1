@@ -1,0 +1,28 @@
+//Double click tombol BMP to JPG
+procedure TForm1.BitBtn3Click(Sender: TObject);
+var
+  imgBuffJpg:TJpegImage;
+  rasio : real;
+  tinggi,lebar : integer;
+begin
+  imgBuffJpg:=TJpegImage.Create;;
+  imgBuffJpg.Assign(image1.Picture.Graphic); // convert dari bitmap ke jpg
+  image2.Picture.Graphic:=imgBuffJpg;
+
+  rasio:=image2.picture.width/image2.picture.height;
+  image2.top:=0; image2.left:=0;
+  tinggi:=panel2.height;
+  lebar:=trunc(tinggi*rasio);
+  if lebar>panel2.width then
+    begin
+      lebar:=panel1.width;
+      rasio:=image1.picture.height/image1.picture.width;
+      tinggi:=trunc(lebar*rasio);
+    end;
+  panel2.width:=lebar;
+  image2.width:=lebar;
+  image2.height:=tinggi;
+  image2.refresh;
+  image2.repaint;
+  image2.Stretch:=true;
+end;
