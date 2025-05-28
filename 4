@@ -1,0 +1,51 @@
+//Double click tombol Save As
+procedure TForm1.BitBtn1Click(Sender: TObject);
+begin
+  if RadioButton2.Checked then
+  begin
+    SavePictureDialog1.DefaultExt := GraphicExtension(TJpegImage);
+    SavePictureDialog1.Filter := GraphicFilter(TJpegImage);
+  end;
+  if RadioButton1.Checked then
+  begin
+    SavePictureDialog1.DefaultExt := GraphicExtension(TBitmap);
+    SavePictureDialog1.Filter := GraphicFilter(TBitmap);
+  end;
+  if SavePictureDialog1.Execute then
+  begin
+    if SavePictureDialog1.FileName<>'' then
+    begin
+      //SavePictureDialog1.Filter := GraphicFilter(TBitmap);
+      Image2.Picture.SaveToFile(SavePictureDialog1.FileName);
+    end;
+  end;
+end;
+//Double click tombol JPG to BMP
+procedure TForm1.BitBtn2Click(Sender: TObject);
+var
+  imgBuffBmp:TBitmap;
+  rasio : real;
+  tinggi,lebar : integer;
+begin
+  imgBuffBmp:=TBitmap.Create;;
+  imgBuffBmp.Assign(image1.Picture.Graphic); // convert dari jpg ke bitmap
+  image2.Picture.Bitmap:=imgBuffBmp;
+
+  rasio:=image2.picture.width/image2.picture.height;
+  image2.top:=0; image2.left:=0;
+  tinggi:=panel2.height;
+  lebar:=trunc(tinggi*rasio);
+  if lebar>panel2.width then
+  begin
+    lebar:=panel1.width;
+    rasio:=image1.picture.height/image1.picture.width;
+    tinggi:=trunc(lebar*rasio);
+  end;
+
+  panel2.width:=lebar;
+  image2.width:=lebar;
+  image2.height:=tinggi;
+  image2.refresh;
+  image2.repaint;
+  image2.Stretch:=true;
+end;
